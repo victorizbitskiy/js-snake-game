@@ -48,7 +48,7 @@ function drawGame() {
   // Snake drawing
   for (let i = 0; i < snake.length; i++) {
     ctx.fillStyle = i === 0 ? 'green ' : 'forestgreen '
-      ctx.fillRect(snake[i].x, snake[i].y, box, box)
+    ctx.fillRect(snake[i].x, snake[i].y, box, box)
   }
 
   ctx.fillStyle = 'white'
@@ -59,6 +59,7 @@ function drawGame() {
   let snakeX = snake[0].x
   let snakeY = snake[0].y
 
+  // Eating food process
   if (snakeX === food.x && snakeY === food.y) {
     score++
     food = {
@@ -67,6 +68,15 @@ function drawGame() {
     }
   } else {
     snake.pop()
+  }
+
+  if (snakeX <= box || snakeX >= box * 17
+    || snakeY <= 3 * box || snakeY >= box * 17) {
+
+    ctx.fillStyle = 'red'
+    ctx.fillRect(snakeX, snakeY, box, box)
+
+    clearInterval(game)
   }
 
   if (dir == 'left') snakeX -= box
