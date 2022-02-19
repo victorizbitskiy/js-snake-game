@@ -22,15 +22,31 @@ snake[0] = {
   y: 10 * box
 }
 
+document.addEventListener('keydown', direction)
+
+let dir
+
+function direction(event) {
+  console.log(event)
+  if (event.key === 'ArrowUp' && dir !== 'down')
+    dir = 'up'
+  else if (event.key === 'ArrowRight'  && dir !== 'left')
+    dir = 'right'
+  else if (event.key === 'ArrowDown'  && dir !== 'up')
+    dir = 'down'
+  else if (event.key === 'ArrowLeft'  && dir !== 'right')
+    dir = 'left'
+}
+
 function drawGame() {
   // Background drawing
   ctx.drawImage(groundImg, 0, 0)
 
   // Food drawing
-  ctx.drawImage(foodImg, food.x , food.y)
+  ctx.drawImage(foodImg, food.x, food.y)
 
   // Snake drawing
-  for(let i = 0; i < snake.length; i++) {
+  for (let i = 0; i < snake.length; i++) {
     ctx.fillStyle = 'green'
     ctx.fillRect(snake[i].x, snake[i].y, box, box);
   }
