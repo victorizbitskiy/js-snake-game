@@ -30,11 +30,11 @@ function direction(event) {
   console.log(event)
   if (event.key === 'ArrowUp' && dir !== 'down')
     dir = 'up'
-  else if (event.key === 'ArrowRight'  && dir !== 'left')
+  else if (event.key === 'ArrowRight' && dir !== 'left')
     dir = 'right'
-  else if (event.key === 'ArrowDown'  && dir !== 'up')
+  else if (event.key === 'ArrowDown' && dir !== 'up')
     dir = 'down'
-  else if (event.key === 'ArrowLeft'  && dir !== 'right')
+  else if (event.key === 'ArrowLeft' && dir !== 'right')
     dir = 'left'
 }
 
@@ -47,12 +47,40 @@ function drawGame() {
 
   // Snake drawing
   for (let i = 0; i < snake.length; i++) {
-    ctx.fillStyle = 'green'
-    ctx.fillRect(snake[i].x, snake[i].y, box, box);
+    ctx.fillStyle = i === 0 ? 'green ' : 'forestgreen '
+      ctx.fillRect(snake[i].x, snake[i].y, box, box)
   }
+
   ctx.fillStyle = 'white'
   ctx.font = '50px Arial'
   ctx.fillText(score, box * 2.5, box * 1.7)
+
+  // Save snake coordinates 
+  let snakeX = snake[0].x
+  let snakeY = snake[0].y
+
+  if (snakeX === food.x && snakeY === food.y) {
+    score++
+    food = {
+      x: Math.floor((Math.random() * 17 + 1)) * box,
+      y: Math.floor((Math.random() * 15 + 3)) * box
+    }
+  } else {
+    snake.pop()
+  }
+
+  if (dir == 'left') snakeX -= box
+  if (dir == 'right') snakeX += box
+  if (dir == 'up') snakeY -= box
+  if (dir == 'down') snakeY += box
+
+  let newHead = {
+    x: snakeX,
+    y: snakeY
+  }
+
+  snake.unshift(newHead)
+
 }
 
 let game = setInterval(drawGame, 100)
