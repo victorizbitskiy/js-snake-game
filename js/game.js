@@ -40,8 +40,11 @@ function direction(event) {
 
 function eatTail(head, SnakeArray) {
   for (let i = 0; i < SnakeArray.length; i++) {
-    if (head.x === SnakeArray[i].x && head.y === SnakeArray[i].y)
+    if (head.x === SnakeArray[i].x && head.y === SnakeArray[i].y) {
+      ctx.fillStyle = 'red'
+      ctx.fillRect(SnakeArray[i].x, SnakeArray[i].y, box, box)
       clearInterval(game)
+    }
   }
 }
 
@@ -77,12 +80,11 @@ function drawGame() {
     snake.pop()
   }
 
-  if (snakeX <= box || snakeX >= box * 17
-    || snakeY <= 3 * box || snakeY >= box * 17) {
+  if (snakeX < box || snakeX > box * 17
+    || snakeY < 3 * box || snakeY > box * 17) {
 
     ctx.fillStyle = 'red'
     ctx.fillRect(snakeX, snakeY, box, box)
-
     clearInterval(game)
   }
 
@@ -101,5 +103,5 @@ function drawGame() {
 
 }
 
-let game = setInterval(drawGame, 100)
+let game = setInterval(drawGame, 200)
 
