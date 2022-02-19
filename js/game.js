@@ -38,6 +38,13 @@ function direction(event) {
     dir = 'left'
 }
 
+function eatTail(head, SnakeArray) {
+  for (let i = 0; i < SnakeArray.length; i++) {
+    if (head.x === SnakeArray[i].x && head.y === SnakeArray[i].y)
+      clearInterval(game)
+  }
+}
+
 function drawGame() {
   // Background drawing
   ctx.drawImage(groundImg, 0, 0)
@@ -89,6 +96,7 @@ function drawGame() {
     y: snakeY
   }
 
+  eatTail(newHead, snake)
   snake.unshift(newHead)
 
 }
