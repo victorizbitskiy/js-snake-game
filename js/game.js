@@ -97,7 +97,7 @@ document.addEventListener('keydown', event => {
     direction = 'left'
 })
 
-function drawGame() {
+function drawGameLoop() {
   // Add background to context
   context.drawImage(backgroundImg, 0, 0)
 
@@ -131,5 +131,5 @@ function drawGame() {
   }
 }
 
-let game = setInterval(drawGame, 200)
+let game = setInterval(drawGameLoop, 200)
 
