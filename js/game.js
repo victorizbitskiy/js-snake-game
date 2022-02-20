@@ -7,8 +7,8 @@ backgroundImg.src = 'img/background.png'
 const foodImg = new Image()
 foodImg.src = 'img/apple.png'
 
-let boxScale = 32;
-let score = 0;
+let boxScale = 32
+let score = 0
 
 let food = createNewFood()
 let snake = new Array(getStartPosition())
@@ -33,9 +33,8 @@ function isEatTail(snakeArray) {
     return false
 
   for (let i = 1; i < snakeArray.length; i++) {
-    if (snakeArray[0].x === snakeArray[i].x && snakeArray[0].y === snakeArray[i].y) {
+    if (snakeArray[0].x === snakeArray[i].x && snakeArray[0].y === snakeArray[i].y)
       return true
-    }
   }
 }
 
@@ -113,6 +112,7 @@ function drawGameLoop() {
       context.fillStyle = 'red'
       context.fillRect(snake[0].x, snake[0].y, boxScale, boxScale)
       clearInterval(game)
+      return
     }
 
     snake.unshift(newHead)
@@ -128,6 +128,7 @@ function drawGameLoop() {
     context.fillStyle = 'red'
     context.fillRect(snake[0].x, snake[0].y, boxScale, boxScale)
     clearInterval(game)
+    return
   }
 }
 
