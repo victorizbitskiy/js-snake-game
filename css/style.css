@@ -2,3 +2,31 @@ canvas {
   display: block;
   margin: 0 auto;
 }
+
+.controls {
+  position: relative;
+  text-align: center;
+}
+
+.controls .button {
+  background-color: white;
+  width: 100px;
+  border: 2px solid;
+  color: rgb(74, 117, 44);
+  padding: 10px 16px;
+  font-size: 12px;
+  margin: 2px 0px;
+  cursor: pointer;
+  transition-duration: 0.2s;
+}
+
+.button:disabled{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.button:hover {
+  background-color: rgb(74, 117, 44);
+  color: white;
+}

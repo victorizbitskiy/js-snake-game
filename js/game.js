@@ -12,7 +12,7 @@ let score = 0
 
 let food = createNewFood()
 let snake = new Array(getStartPosition())
-let direction
+let keydown
 
 function createNewFood() {
   return {
@@ -50,10 +50,10 @@ function getNextHead(snakeHead) {
   let snakeHeadX = snakeHead.x
   let snakeHeadY = snakeHead.y
 
-  if (direction === 'left') snakeHeadX -= boxScale
-  if (direction === 'right') snakeHeadX += boxScale
-  if (direction === 'up') snakeHeadY -= boxScale
-  if (direction === 'down') snakeHeadY += boxScale
+  if (keydown === 'left') snakeHeadX -= boxScale
+  if (keydown === 'right') snakeHeadX += boxScale
+  if (keydown === 'up') snakeHeadY -= boxScale
+  if (keydown === 'down') snakeHeadY += boxScale
 
   // Return new snake head coordinates
   return {
@@ -85,16 +85,18 @@ function isFoodEaten() {
   }
 }
 
-document.addEventListener('keydown', event => {
-  if (event.key === 'ArrowUp' && direction !== 'down')
-    direction = 'up'
-  else if (event.key === 'ArrowRight' && direction !== 'left')
-    direction = 'right'
-  else if (event.key === 'ArrowDown' && direction !== 'up')
-    direction = 'down'
-  else if (event.key === 'ArrowLeft' && direction !== 'right')
-    direction = 'left'
-})
+function keyHandler(event) {
+  if (event.key === 'ArrowUp' && keydown !== 'down')
+    keydown = 'up'
+  else if (event.key === 'ArrowRight' && keydown !== 'left')
+    keydown = 'right'
+  else if (event.key === 'ArrowDown' && keydown !== 'up')
+    keydown = 'down'
+  else if (event.key === 'ArrowLeft' && keydown !== 'right')
+    keydown = 'left'
+}
+
+document.addEventListener('keydown', keyHandler)
 
 function drawGameLoop() {
   // Add background to context
@@ -105,6 +107,9 @@ function drawGameLoop() {
   drawSnake()
 
   let newHead = getNextHead(snake[0])
+
+  if (snake[0].x === newHead.x && snake[0].y === newHead.y)
+    return
 
   if (!isCollision(newHead)) {
 
@@ -132,5 +137,40 @@ function drawGameLoop() {
   }
 }
 
+const pauseBtn = document.getElementById('pause')
+pauseBtn.currentValue = "false"
+
+function pauseHandler() {
+  if (pauseBtn.currentValue == "true") {
+    game = setInterval(drawGameLoop, 200)
+    document.addEventListener('keydown', keyHandler)
+    pauseBtn.textContent = 'Pause'
+    pauseBtn.currentValue = false
+  } else {
+    clearInterval(game)
+    document.removeEventListener('keydown', keyHandler)
+    pauseBtn.textContent = 'Pause ||'
+    pauseBtn.currentValue = "true"
+  }
+}
+
+const newGameBtn = document.getElementById('newGame')
+
+function newGameBtnHandler() {
+  score = 0
+  food = createNewFood()
+  snake = new Array(getStartPosition())
+  keydown = ''
+  clearInterval(game)
+  game = setInterval(drawGameLoop, 200)
+}
+
+pauseBtn.addEventListener('click', pauseHandler)
+newGameBtn.addEventListener('click', newGameBtnHandler)
+
 let game = setInterval(drawGameLoop, 200)
+
+
+
+
 
