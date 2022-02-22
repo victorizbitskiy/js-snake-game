@@ -9,10 +9,88 @@ foodImg.src = 'img/apple.png'
 
 let boxScale = 32
 let score = 0
-
 let food = createNewFood()
 let snake = new Array(getStartPosition())
-let keydown
+let keydown = ''
+
+const pauseBtn = document.getElementById('pause')
+pauseBtn.currentValue = "false"
+pauseBtn.addEventListener('click', pauseHandler)
+
+const newGameBtn = document.getElementById('newGame')
+newGameBtn.addEventListener('click', newGameBtnHandler)
+
+document.addEventListener('keydown', keyHandler)
+
+let game = setInterval(drawGameLoop, 200)
+
+function drawGameLoop() {
+  // Add background to context
+  context.drawImage(backgroundImg, 0, 0)
+
+  drawScore()
+  drawFood()
+  drawSnake()
+
+  let newHead = getNextHead(snake[0])
+
+  if (snake[0].x === newHead.x && snake[0].y === newHead.y)
+    return
+
+  if (!isCollision(newHead)) {
+
+    if (isEatTail(snake)) {
+      context.fillStyle = 'red'
+      context.fillRect(snake[0].x, snake[0].y, boxScale, boxScale)
+      clearInterval(game)
+      return
+    }
+
+    snake.unshift(newHead)
+
+    if (isFoodEaten()) {
+      score++
+      food = createNewFood()
+    } else {
+      snake.pop()
+    }
+
+  } else {
+    context.fillStyle = 'red'
+    context.fillRect(snake[0].x, snake[0].y, boxScale, boxScale)
+    clearInterval(game)
+    return
+  }
+}
+
+let pauseBtnCurrentValue = 0
+
+function pauseHandler() {
+  if (pauseBtnCurrentValue === 1) {
+    pauseBtnCurrentValue = 0
+    document.addEventListener('keydown', keyHandler)
+    // if the new game button was pressed, 
+    // then first we need to clear the existing interval 
+    // and then set new interval
+    clearInterval(game)
+    game = setInterval(drawGameLoop, 200)
+    pauseBtn.textContent = 'Pause'
+  } else {
+    pauseBtnCurrentValue = 1
+    document.removeEventListener('keydown', keyHandler)
+    clearInterval(game)
+    pauseBtn.textContent = 'Pause ||'
+  }
+}
+
+function newGameBtnHandler() {
+  score = 0
+  food = createNewFood()
+  snake = new Array(getStartPosition())
+  keydown = ''
+  clearInterval(game)
+  game = setInterval(drawGameLoop, 200)
+}
 
 function createNewFood() {
   return {
@@ -95,82 +173,3 @@ function keyHandler(event) {
   else if (event.key === 'ArrowLeft' && keydown !== 'right')
     keydown = 'left'
 }
-
-document.addEventListener('keydown', keyHandler)
-
-function drawGameLoop() {
-  // Add background to context
-  context.drawImage(backgroundImg, 0, 0)
-
-  drawScore()
-  drawFood()
-  drawSnake()
-
-  let newHead = getNextHead(snake[0])
-
-  if (snake[0].x === newHead.x && snake[0].y === newHead.y)
-    return
-
-  if (!isCollision(newHead)) {
-
-    if (isEatTail(snake)) {
-      context.fillStyle = 'red'
-      context.fillRect(snake[0].x, snake[0].y, boxScale, boxScale)
-      clearInterval(game)
-      return
-    }
-
-    snake.unshift(newHead)
-
-    if (isFoodEaten()) {
-      score++
-      food = createNewFood()
-    } else {
-      snake.pop()
-    }
-
-  } else {
-    context.fillStyle = 'red'
-    context.fillRect(snake[0].x, snake[0].y, boxScale, boxScale)
-    clearInterval(game)
-    return
-  }
-}
-
-const pauseBtn = document.getElementById('pause')
-pauseBtn.currentValue = "false"
-
-function pauseHandler() {
-  if (pauseBtn.currentValue == "true") {
-    game = setInterval(drawGameLoop, 200)
-    document.addEventListener('keydown', keyHandler)
-    pauseBtn.textContent = 'Pause'
-    pauseBtn.currentValue = false
-  } else {
-    clearInterval(game)
-    document.removeEventListener('keydown', keyHandler)
-    pauseBtn.textContent = 'Pause ||'
-    pauseBtn.currentValue = "true"
-  }
-}
-
-const newGameBtn = document.getElementById('newGame')
-
-function newGameBtnHandler() {
-  score = 0
-  food = createNewFood()
-  snake = new Array(getStartPosition())
-  keydown = ''
-  clearInterval(game)
-  game = setInterval(drawGameLoop, 200)
-}
-
-pauseBtn.addEventListener('click', pauseHandler)
-newGameBtn.addEventListener('click', newGameBtnHandler)
-
-let game = setInterval(drawGameLoop, 200)
-
-
-
-
-
