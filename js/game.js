@@ -9,10 +9,18 @@ foodImg.src = 'img/apple.png'
 
 let boxScale = 32
 let score = 0
+let bestScore = 0
 let food = createNewFood()
 let snake = new Array(getStartPosition())
 let keydown = ''
 let pauseBtnCurrentValue = 0
+
+const localStorageRaw = localStorage.getItem('snakeGame')
+const localStorageObject = JSON.parse(localStorageRaw)
+
+if (localStorageObject != null) {
+  bestScore = localStorageObject.bestScore
+}
 
 const pauseBtn = document.getElementById('pause')
 pauseBtn.currentValue = "false"
@@ -30,6 +38,7 @@ function drawGameLoop() {
   context.drawImage(backgroundImg, 0, 0)
 
   drawScore()
+  drawBestScore()
   drawSnake()
   drawFood()
 
@@ -62,8 +71,14 @@ function drawGameLoop() {
 
 function drawScore() {
   context.fillStyle = 'white'
-  context.font = '50px Arial'
-  context.fillText(score, boxScale * 2.5, boxScale * 1.7)
+  context.font = '44px Arial'
+  context.fillText(score, boxScale * 2.2, boxScale * 1.7)
+}
+
+function drawBestScore() {
+  context.fillStyle = 'white'
+  context.font = '44px Arial'
+  context.fillText(bestScore, boxScale * 6.5, boxScale * 1.7)
 }
 
 function drawSnake() {
@@ -132,6 +147,12 @@ function isEatTail(snakeArray) {
 }
 
 function gameOver() {
+
+  if (score > bestScore) {
+    bestScore = score
+    localStorage.setItem('snakeGame', JSON.stringify({ bestScore: bestScore }))
+  }
+
   context.fillStyle = 'red'
   context.fillRect(snake[0].x, snake[0].y, boxScale, boxScale)
   clearInterval(game)
