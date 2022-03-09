@@ -6,7 +6,6 @@ const backgroundImg = new Image()
 backgroundImg.src = 'img/background.png'
 
 const foodImg = new Image()
-foodImg.src = 'img/apple.png'
 
 let boxScale = 32
 let score = 0
@@ -100,6 +99,24 @@ function isFoodEaten() {
 }
 
 function createNewFood() {
+  const foods = [
+    'img/apple.png',
+    'img/avocado.png',
+    'img/banana.png',
+    'img/blueberry.png',
+    'img/cake.png',
+    'img/carrot.png',
+    'img/cherry.png',
+    'img/grape.png',
+    'img/hamburger.png',
+    'img/lemon.png',
+    'img/orange.png',
+    'img/pear.png',
+    'img/pineapple.png',
+    'img/strawberry.png',
+    'img/watermelone.png',
+  ]
+  foodImg.src = foods[Math.floor(Math.random() * foods.length)]
   return {
     x: Math.floor((Math.random() * 17 + 1)) * boxScale,
     y: Math.floor((Math.random() * 15 + 3)) * boxScale
